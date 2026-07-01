@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { DocumentList } from './components/DocumentList';
 import { QuestionPanel } from './components/QuestionPanel';
 import { DocumentDetail } from './components/DocumentDetail';
@@ -47,6 +47,10 @@ export function App() {
       console.error('Failed to refresh documents:', err);
     }
   }, []);
+
+  useEffect(() => {
+    refreshDocuments();
+  }, [refreshDocuments]);
 
   const handleImport = useCallback(async () => {
     // In a real app this would open a file dialog.
