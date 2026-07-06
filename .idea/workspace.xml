@@ -4,35 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ec98154d-aeb3-46d2-8fd2-7b0878c36b6f" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/projects/project-02/starter/feature_list.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-02/starter/feature_list.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-02/starter/src/main/ipc-handlers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-02/starter/src/main/ipc-handlers.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-02/starter/src/preload/preload.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-02/starter/src/preload/preload.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-02/starter/src/renderer/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-02/starter/src/renderer/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-02/starter/src/renderer/components/DocumentDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-02/starter/src/renderer/components/DocumentDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-02/starter/src/renderer/components/DocumentList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-02/starter/src/renderer/components/DocumentList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-02/starter/src/renderer/components/ImportPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-02/starter/src/renderer/components/ImportPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-02/starter/src/renderer/components/StatusBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-02/starter/src/renderer/components/StatusBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-02/starter/src/renderer/types.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-02/starter/src/renderer/types.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-02/starter/src/services/document-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-02/starter/src/services/document-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-02/starter/src/services/qa-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-02/starter/src/services/qa-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-02/starter/src/shared/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-02/starter/src/shared/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/feature_list.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/feature_list.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/main/ipc-handlers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/main/ipc-handlers.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/main/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/main/main.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/preload/preload.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/preload/preload.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/renderer/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/renderer/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/renderer/components/DocumentDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/renderer/components/DocumentDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/renderer/components/DocumentList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/renderer/components/DocumentList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/renderer/components/ImportPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/renderer/components/ImportPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/renderer/components/StatusBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/renderer/components/StatusBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/renderer/types.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/renderer/types.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/services/document-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/services/document-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/services/indexing-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/services/indexing-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/services/qa-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/services/qa-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/src/shared/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/src/shared/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/project-03/starter/tsconfig.node.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/project-03/starter/tsconfig.node.json" afterDir="false" />
-    </list>
+    <list default="true" id="ec98154d-aeb3-46d2-8fd2-7b0878c36b6f" name="更改" comment="  完成的 4 个 Feature                                                                                                                                                  &#10;                                                                                                                                                                       &#10;  1. metadata-extraction — 导入时提取 wordCount/lineCount/fileType，DocumentDetail 显示元数据                                                                          &#10;  2. document-chunking — 增强 IndexingService，索引后更新文档 status 和 chunks 计数                                                                                    &#10;  3. indexing-status-ui — StatusBar 显示索引进度、彩色状态指示器、文档数                                                                                               &#10;  4. grounded-qa — 修复 QaService 注入，UI 显示置信度和引用" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -149,7 +121,7 @@
       <workItem from="1783247854138" duration="2749000" />
       <workItem from="1783254031786" duration="211000" />
       <workItem from="1783265743076" duration="7603000" />
-      <workItem from="1783338885525" duration="3485000" />
+      <workItem from="1783338885525" duration="4237000" />
     </task>
     <task id="LOCAL-00001" summary="p01-starter">
       <option name="closed" value="true" />
@@ -175,7 +147,23 @@
       <option name="project" value="LOCAL" />
       <updated>1782913774325</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="  完成的 4 个 Feature                                                                                                                                                  &#10;                                                                                                                                                                       &#10;  1. metadata-extraction — 导入时提取 wordCount/lineCount/fileType，DocumentDetail 显示元数据                                                                          &#10;  2. document-chunking — 增强 IndexingService，索引后更新文档 status 和 chunks 计数                                                                                    &#10;  3. indexing-status-ui — StatusBar 显示索引进度、彩色状态指示器、文档数                                                                                               &#10;  4. grounded-qa — 修复 QaService 注入，UI 显示置信度和引用">
+      <option name="closed" value="true" />
+      <created>1783353772816</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1783353772816</updated>
+    </task>
+    <task id="LOCAL-00005" summary="  完成的 4 个 Feature                                                                                                                                                  &#10;                                                                                                                                                                       &#10;  1. metadata-extraction — 导入时提取 wordCount/lineCount/fileType，DocumentDetail 显示元数据                                                                          &#10;  2. document-chunking — 增强 IndexingService，索引后更新文档 status 和 chunks 计数                                                                                    &#10;  3. indexing-status-ui — StatusBar 显示索引进度、彩色状态指示器、文档数                                                                                               &#10;  4. grounded-qa — 修复 QaService 注入，UI 显示置信度和引用">
+      <option name="closed" value="true" />
+      <created>1783353781481</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1783353781481</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -183,7 +171,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="p01-starter" />
-    <option name="LAST_COMMIT_MESSAGE" value="p01-starter" />
+    <MESSAGE value="  完成的 4 个 Feature                                                                                                                                                  &#10;                                                                                                                                                                       &#10;  1. metadata-extraction — 导入时提取 wordCount/lineCount/fileType，DocumentDetail 显示元数据                                                                          &#10;  2. document-chunking — 增强 IndexingService，索引后更新文档 status 和 chunks 计数                                                                                    &#10;  3. indexing-status-ui — StatusBar 显示索引进度、彩色状态指示器、文档数                                                                                               &#10;  4. grounded-qa — 修复 QaService 注入，UI 显示置信度和引用" />
+    <option name="LAST_COMMIT_MESSAGE" value="  完成的 4 个 Feature                                                                                                                                                  &#10;                                                                                                                                                                       &#10;  1. metadata-extraction — 导入时提取 wordCount/lineCount/fileType，DocumentDetail 显示元数据                                                                          &#10;  2. document-chunking — 增强 IndexingService，索引后更新文档 status 和 chunks 计数                                                                                    &#10;  3. indexing-status-ui — StatusBar 显示索引进度、彩色状态指示器、文档数                                                                                               &#10;  4. grounded-qa — 修复 QaService 注入，UI 显示置信度和引用" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/learn_harness_engineering$demo.coverage" NAME="demo 覆盖结果" MODIFIED="1779553998637" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
