@@ -41,7 +41,7 @@ export class DocumentService {
     // Copy file to data directory
     this.persistence.copyFileToDocuments(filePath, filename);
 
-    // Store content for indexing
+    // Store content for indexing and viewing
     this.persistence.writeText(`content/${doc.id}.txt`, content);
 
     // Update metadata
@@ -74,16 +74,29 @@ export class DocumentService {
     return docs[index];
   }
 
-  /** Delete a document by ID. */
+  /** Delete a document by ID. Removes content and metadata. */
   deleteDocument(id: string): boolean {
     const docs = this.listDocuments();
     const doc = docs.find(d => d.id === id);
     if (!doc) return false;
 
+    // Remove file from documents directory
     this.persistence.deleteFromDocuments(doc.filename);
 
+    // Remove stored content
+    const contentPath = path.join(this.persistence.getDataDir(), 'content', `${id}.txt`);
+    if (fs.existsSync(contentPath)) {
+      fs.unlinkSync(contentPath);
+    }
+
+    // Update metadata
     const updated = docs.filter(d => d.id !== id);
     this.persistence.writeJson(DOCUMENTS_META, updated);
     return true;
+  }
+
+  /** Check whether the persistence layer has stored data. */
+  hasPersistedData(): boolean {
+    return this.persistence.exists(DOCUMENTS_META);
   }
 }

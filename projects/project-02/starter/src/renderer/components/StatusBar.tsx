@@ -1,17 +1,18 @@
-import React from 'react';
-import { AppStatus } from '../../../shared/types';
+import type { AppStatus } from '../../shared/types';
 
 interface Props {
   status: AppStatus;
 }
 
+const STATUS_COLORS: Record<AppStatus['indexStatus'], string> = {
+  idle: '#888',
+  indexing: '#f0ad4e',
+  ready: '#5cb85c',
+  error: '#d9534f',
+};
+
 export function StatusBar({ status }: Props) {
-  const statusColor = {
-    idle: '#888',
-    indexing: '#f0ad4e',
-    ready: '#5cb85c',
-    error: '#d9534f',
-  }[status.indexStatus] ?? '#888';
+  const statusColor = STATUS_COLORS[status.indexStatus] ?? '#888';
 
   return (
     <div style={{

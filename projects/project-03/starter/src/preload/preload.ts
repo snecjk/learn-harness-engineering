@@ -18,6 +18,9 @@ const api = {
     ask: (question: string) => ipcRenderer.invoke(IPC_CHANNELS.ASK_QUESTION, question),
     history: () => ipcRenderer.invoke(IPC_CHANNELS.GET_HISTORY),
   },
+  app: {
+    getStatus: () => ipcRenderer.invoke(IPC_CHANNELS.GET_STATUS),
+  },
 };
 
 contextBridge.exposeInMainWorld('knowledgeBase', api);

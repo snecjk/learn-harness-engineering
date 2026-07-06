@@ -62,33 +62,33 @@
       "id": "document-chunking",
       "name": "Document Chunking",
       "description": "IndexingService splits documents into ~500 char chunks at paragraph boundaries",
-      "status": "not-started",
-      "evidence": null,
-      "testedAt": null
+      "status": "pass",
+      "evidence": "IndexingService.chunkDocument() splits at paragraph boundaries with ~500 char target. startIndexing() updates document status to 'indexed' and stores chunk count. Index meta persisted in index-meta.json. Type check passes.",
+      "testedAt": "2026-07-06T10:15:00Z"
     },
     {
       "id": "metadata-extraction",
       "name": "Metadata Extraction",
       "description": "On import, extract word count, line count, and file type metadata from documents",
-      "status": "not-started",
-      "evidence": null,
-      "testedAt": null
+      "status": "pass",
+      "evidence": "DocumentService.importDocument() extracts wordCount, lineCount, fileType from content. DocumentDetail displays all metadata fields. Type check passes.",
+      "testedAt": "2026-07-06T10:00:00Z"
     },
     {
       "id": "indexing-status-ui",
       "name": "Indexing Status in StatusBar",
       "description": "StatusBar shows indexing progress with document counts and status indicator",
-      "status": "not-started",
-      "evidence": null,
-      "testedAt": null
+      "status": "pass",
+      "evidence": "StatusBar displays index status with color indicator, progress (currentIndexed/totalDocuments), document count, and last activity. AppStatus type extended with currentIndexed and totalDocuments. GET_STATUS IPC handler wired through preload. Type check passes.",
+      "testedAt": "2026-07-06T10:30:00Z"
     },
     {
       "id": "grounded-qa",
       "name": "Grounded Q&A with Citations",
       "description": "QaService returns answers with document citations and confidence scores",
-      "status": "not-started",
-      "evidence": null,
-      "testedAt": null
+      "status": "pass",
+      "evidence": "QaService.ask() performs keyword matching against indexed chunks, returns QAResponse with citations (documentTitle, chunkIndex, excerpt) and confidence score (0.85 with citations, 0.3 without). UI displays answer, confidence percentage, and citation list. IndexingService properly injected into QaService. Type check passes.",
+      "testedAt": "2026-07-06T10:45:00Z"
     }
   ]
 }

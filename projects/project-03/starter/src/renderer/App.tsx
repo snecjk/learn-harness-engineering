@@ -1,32 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { DocumentList } from './components/DocumentList';
 import { QuestionPanel } from './components/QuestionPanel';
 import { DocumentDetail } from './components/DocumentDetail';
 import { ImportPanel } from './components/ImportPanel';
 import { StatusBar } from './components/StatusBar';
-import { Document, AppStatus, QAResponse } from '../../shared/types';
-
-declare global {
-  interface Window {
-    knowledgeBase: {
-      documents: {
-        list: () => Promise<Document[]>;
-        import: (filePath: string) => Promise<Document>;
-        get: (id: string) => Promise<Document | null>;
-        delete: (id: string) => Promise<boolean>;
-      };
-      indexing: {
-        start: (documentId?: string) => Promise<{ status: string }>;
-        status: () => Promise<AppStatus>;
-        chunks: (documentId: string) => Promise<Array<{ id: string; content: string; index: number }>>;
-      };
-      qa: {
-        ask: (question: string) => Promise<QAResponse>;
-        history: () => Promise<Array<{ question: string; response: QAResponse }>>;
-      };
-    };
-  }
-}
+import { Document, AppStatus, QAResponse, Citation } from '../shared/types';
 
 export function App() {
   const [documents, setDocuments] = useState<Document[]>([]);
@@ -34,6 +12,8 @@ export function App() {
   const [appStatus, setAppStatus] = useState<AppStatus>({
     documentsLoaded: 0,
     indexStatus: 'idle',
+    currentIndexed: 0,
+    totalDocuments: 0,
     lastActivity: '',
   });
   const [lastResponse, setLastResponse] = useState<QAResponse | null>(null);
@@ -48,7 +28,7 @@ export function App() {
     try {
       const docs = await window.knowledgeBase.documents.list();
       setDocuments(docs);
-      const status = await window.knowledgeBase.indexing.status();
+      const status = await window.knowledgeBase.app.getStatus();
       setAppStatus(status);
     } catch (err) {
       console.error('Failed to refresh documents:', err);
@@ -182,10 +162,13 @@ export function App() {
                 border: '1px solid #0f3460',
               }}>
                 <div style={{ fontSize: '14px', lineHeight: 1.6 }}>{lastResponse.answer}</div>
+                <div style={{ marginTop: '8px', fontSize: '11px', color: '#666' }}>
+                  Confidence: {(lastResponse.confidence * 100).toFixed(0)}%
+                </div>
                 {lastResponse.citations.length > 0 && (
                   <div style={{ marginTop: '10px', fontSize: '12px', color: '#8888bb' }}>
-                    <strong>Citations:</strong>
-                    {lastResponse.citations.map((c, i) => (
+                    <strong>Citations ({lastResponse.citations.length}):</strong>
+                    {lastResponse.citations.map((c: Citation, i: number) => (
                       <div key={i} style={{ marginTop: '4px', paddingLeft: '8px', borderLeft: '2px solid #533483' }}>
                         {c.documentTitle} (chunk {c.chunkIndex}): {c.excerpt.substring(0, 100)}...
                       </div>

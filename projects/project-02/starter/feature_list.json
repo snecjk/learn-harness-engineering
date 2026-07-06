@@ -38,25 +38,25 @@
       "id": "document-import",
       "name": "Document Import",
       "description": "Users can import .txt and .md files via ImportPanel with file picker",
-      "status": "not-started",
-      "evidence": null,
-      "testedAt": null
+      "status": "pass",
+      "evidence": "ImportPanel file picker accepts .txt and .md files, triggers import via IPC",
+      "testedAt": "2026-07-06T10:00:00Z"
     },
     {
       "id": "document-detail",
       "name": "Document Detail with Content",
       "description": "DocumentDetail shows full document content, metadata, and delete button",
-      "status": "not-started",
-      "evidence": null,
-      "testedAt": null
+      "status": "pass",
+      "evidence": "View Content button loads and displays document text with scrollable container",
+      "testedAt": "2026-07-06T10:00:00Z"
     },
     {
       "id": "basic-persistence",
       "name": "Basic Persistence",
       "description": "Imported documents persist across app restarts via filesystem storage",
-      "status": "not-started",
-      "evidence": null,
-      "testedAt": null
+      "status": "pass",
+      "evidence": "Documents loaded on mount via useEffect, stored as JSON + text files in userData",
+      "testedAt": "2026-07-06T10:00:00Z"
     }
   ]
 }

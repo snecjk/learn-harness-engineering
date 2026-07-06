@@ -2,7 +2,7 @@ import { IpcMain } from 'electron';
 import { DocumentService } from '../services/document-service';
 import { IndexingService } from '../services/indexing-service';
 import { QaService } from '../services/qa-service';
-import { IPC_CHANNELS } from '../shared/types';
+import { IPC_CHANNELS, AppStatus } from '../shared/types';
 
 export interface Services {
   documentService: DocumentService;
@@ -55,5 +55,18 @@ export function registerIpcHandlers(ipcMain: IpcMain, services: Services) {
 
   ipcMain.handle(IPC_CHANNELS.GET_HISTORY, async () => {
     return qaService.getHistory();
+  });
+
+  // App status
+  ipcMain.handle(IPC_CHANNELS.GET_STATUS, async (): Promise<AppStatus> => {
+    const indexStatus = indexingService.getStatus();
+    const docs = documentService.listDocuments();
+    return {
+      documentsLoaded: docs.length,
+      indexStatus: indexStatus.status,
+      currentIndexed: indexStatus.currentIndexed,
+      totalDocuments: indexStatus.totalDocuments,
+      lastActivity: indexStatus.lastIndexed ?? '',
+    };
   });
 }

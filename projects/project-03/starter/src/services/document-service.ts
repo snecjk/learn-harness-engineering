@@ -28,6 +28,12 @@ export class DocumentService {
     const filename = path.basename(filePath);
     const content = fs.readFileSync(filePath, 'utf-8');
     const stats = fs.statSync(filePath);
+    const ext = path.extname(filename).toLowerCase();
+
+    // Extract metadata from content
+    const wordCount = content.trim().length > 0 ? content.trim().split(/\s+/).length : 0;
+    const lineCount = content.split('\n').length;
+    const fileType = ext === '.md' ? 'markdown' : ext === '.txt' ? 'plaintext' : ext.replace('.', '');
 
     const doc: Document = {
       id: uuidv4(),
@@ -36,6 +42,9 @@ export class DocumentService {
       importedAt: new Date().toISOString(),
       size: stats.size,
       status: 'imported',
+      wordCount,
+      lineCount,
+      fileType,
     };
 
     // Copy file to data directory

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Document, Chunk } from '../../../shared/types';
+import { useEffect, useState } from 'react';
+import type { Document, Chunk } from '../../shared/types';
 
 interface Props {
   document: Document;
@@ -10,13 +10,30 @@ export function DocumentDetail({ document, onDelete }: Props) {
   const [chunks, setChunks] = useState<Chunk[]>([]);
   const [showChunks, setShowChunks] = useState(false);
   const [content, setContent] = useState<string | null>(null);
+  const [showContent, setShowContent] = useState(false);
+  const [loadingContent, setLoadingContent] = useState(false);
 
   useEffect(() => {
     window.knowledgeBase.indexing.chunks(document.id).then(setChunks);
   }, [document.id]);
 
-  // TODO: Load document content for viewing -- not yet implemented
-  // This is part of the document-detail feature to be completed.
+  // Load document content when requested
+  const loadContent = async () => {
+    if (content) {
+      setShowContent(!showContent);
+      return;
+    }
+    setLoadingContent(true);
+    try {
+      const text = await window.knowledgeBase.documents.getContent(document.id);
+      setContent(text);
+      setShowContent(true);
+    } catch (err) {
+      console.error('Failed to load document content:', err);
+    } finally {
+      setLoadingContent(false);
+    }
+  };
 
   return (
     <div>
@@ -31,7 +48,22 @@ export function DocumentDetail({ document, onDelete }: Props) {
         {document.chunks !== undefined && <div>Chunks: {document.chunks}</div>}
       </div>
 
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
+        <button
+          onClick={loadContent}
+          disabled={loadingContent}
+          style={{
+            padding: '6px 12px',
+            background: '#0f3460',
+            color: '#e0e0e0',
+            border: '1px solid #1a1a4e',
+            borderRadius: '4px',
+            cursor: loadingContent ? 'wait' : 'pointer',
+            fontSize: '12px',
+          }}
+        >
+          {loadingContent ? 'Loading...' : showContent ? 'Hide Content' : 'View Content'}
+        </button>
         <button
           onClick={() => setShowChunks(!showChunks)}
           style={{
@@ -80,8 +112,8 @@ export function DocumentDetail({ document, onDelete }: Props) {
         )}
       </div>
 
-      {/* Content viewer -- placeholder until document-detail feature is implemented */}
-      {content && (
+      {/* Document content viewer */}
+      {showContent && content && (
         <div style={{
           padding: '16px',
           background: '#1a1a3e',
@@ -90,6 +122,9 @@ export function DocumentDetail({ document, onDelete }: Props) {
           fontSize: '13px',
           lineHeight: 1.6,
           whiteSpace: 'pre-wrap',
+          maxHeight: '400px',
+          overflow: 'auto',
+          marginBottom: '16px',
         }}>
           {content}
         </div>

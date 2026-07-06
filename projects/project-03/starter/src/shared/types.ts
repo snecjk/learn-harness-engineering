@@ -8,6 +8,9 @@ export interface Document {
   size: number;
   status: 'imported' | 'indexing' | 'indexed' | 'error';
   chunks?: number;
+  wordCount?: number;
+  lineCount?: number;
+  fileType?: string;
 }
 
 export interface Chunk {
@@ -40,6 +43,8 @@ export interface QAHistory {
 export interface AppStatus {
   documentsLoaded: number;
   indexStatus: 'idle' | 'indexing' | 'ready' | 'error';
+  currentIndexed: number;
+  totalDocuments: number;
   lastActivity: string;
 }
 

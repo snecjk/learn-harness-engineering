@@ -30,6 +30,11 @@ export function registerIpcHandlers(ipcMain: IpcMain, services: Services) {
     return documentService.deleteDocument(id);
   });
 
+  // Document content retrieval
+  ipcMain.handle(IPC_CHANNELS.GET_DOCUMENT_CONTENT, async (_event, id: string) => {
+    return documentService.getDocumentContent(id);
+  });
+
   // Indexing
   ipcMain.handle(IPC_CHANNELS.START_INDEXING, async (_event, documentId?: string) => {
     return indexingService.startIndexing(documentId);

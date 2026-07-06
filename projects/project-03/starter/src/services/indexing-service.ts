@@ -4,8 +4,9 @@ import { PersistenceService } from './persistence-service';
 
 const INDEX_META = 'index-meta.json';
 const CHUNKS_DIR = 'chunks';
+const DOCUMENTS_META = 'documents-meta.json';
 
-interface IndexStatus {
+export interface IndexStatus {
   status: 'idle' | 'indexing' | 'ready' | 'error';
   currentIndexed: number;
   totalDocuments: number;
@@ -21,21 +22,28 @@ export class IndexingService {
 
   /** Start indexing documents. If documentId is provided, index only that document. */
   async startIndexing(documentId?: string): Promise<IndexStatus> {
-    const status = this.getStatus();
-
     if (documentId) {
       // Index a single document
       const content = this.persistence.readText(`content/${documentId}.txt`);
       if (!content) {
-        return { ...status, status: 'error' };
+        return { ...this.getStatus(), status: 'error' };
       }
       const chunks = this.chunkDocument(documentId, content);
       this.persistence.writeJson(`${CHUNKS_DIR}/${documentId}.json`, chunks);
+
+      // Update index meta
+      const chunksMeta = this.persistence.readJson<Record<string, string[]>>(INDEX_META) ?? {};
+      chunksMeta[documentId] = chunks.map(c => c.id);
+      this.persistence.writeJson(INDEX_META, chunksMeta);
+
+      // Update document status and chunk count
+      this.updateDocumentIndexStatus(documentId, 'indexed', chunks.length);
+
       return this.getStatus();
     }
 
     // Index all documents that haven't been indexed yet
-    const docsMeta = this.persistence.readJson<Document[]>('documents-meta.json') ?? [];
+    const docsMeta = this.persistence.readJson<Document[]>(DOCUMENTS_META) ?? [];
     const chunksMeta = this.persistence.readJson<Record<string, string[]>>(INDEX_META) ?? {};
 
     for (const doc of docsMeta) {
@@ -47,6 +55,9 @@ export class IndexingService {
       const chunks = this.chunkDocument(doc.id, content);
       this.persistence.writeJson(`${CHUNKS_DIR}/${doc.id}.json`, chunks);
       chunksMeta[doc.id] = chunks.map(c => c.id);
+
+      // Update document status and chunk count
+      this.updateDocumentIndexStatus(doc.id, 'indexed', chunks.length);
     }
 
     this.persistence.writeJson(INDEX_META, chunksMeta);
@@ -126,5 +137,15 @@ export class IndexingService {
         wordCount: String(content.split(/\s+/).length),
       },
     };
+  }
+
+  /** Update a document's status and chunk count in documents-meta.json. */
+  private updateDocumentIndexStatus(documentId: string, status: Document['status'], chunkCount: number): void {
+    const docs = this.persistence.readJson<Document[]>(DOCUMENTS_META) ?? [];
+    const idx = docs.findIndex(d => d.id === documentId);
+    if (idx === -1) return;
+
+    docs[idx] = { ...docs[idx], status, chunks: chunkCount };
+    this.persistence.writeJson(DOCUMENTS_META, docs);
   }
 }

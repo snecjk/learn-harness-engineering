@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Document, Chunk } from '../../../shared/types';
+import { useEffect, useState } from 'react';
+import { Document, Chunk } from '../../shared/types';
 
 interface Props {
   document: Document;
@@ -45,6 +45,9 @@ export function DocumentDetail({ document, onDelete }: Props) {
         <div>Imported: {new Date(document.importedAt).toLocaleString()}</div>
         <div>Size: {(document.size / 1024).toFixed(1)} KB</div>
         <div>Status: {document.status}</div>
+        {document.fileType !== undefined && <div>Type: {document.fileType}</div>}
+        {document.wordCount !== undefined && <div>Words: {document.wordCount}</div>}
+        {document.lineCount !== undefined && <div>Lines: {document.lineCount}</div>}
         {document.chunks !== undefined && <div>Chunks: {document.chunks}</div>}
       </div>
 

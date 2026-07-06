@@ -1,32 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { DocumentList } from './components/DocumentList';
 import { QuestionPanel } from './components/QuestionPanel';
 import { DocumentDetail } from './components/DocumentDetail';
 import { ImportPanel } from './components/ImportPanel';
 import { StatusBar } from './components/StatusBar';
-import { Document, AppStatus, QAResponse } from '../../shared/types';
-
-declare global {
-  interface Window {
-    knowledgeBase: {
-      documents: {
-        list: () => Promise<Document[]>;
-        import: (filePath: string) => Promise<Document>;
-        get: (id: string) => Promise<Document | null>;
-        delete: (id: string) => Promise<boolean>;
-      };
-      indexing: {
-        start: (documentId?: string) => Promise<{ status: string }>;
-        status: () => Promise<AppStatus>;
-        chunks: (documentId: string) => Promise<Array<{ id: string; content: string; index: number }>>;
-      };
-      qa: {
-        ask: (question: string) => Promise<QAResponse>;
-        history: () => Promise<Array<{ question: string; response: QAResponse }>>;
-      };
-    };
-  }
-}
+import type { Document, AppStatus, QAResponse, Citation } from '../shared/types';
 
 export function App() {
   const [documents, setDocuments] = useState<Document[]>([]);
@@ -38,6 +16,11 @@ export function App() {
   });
   const [lastResponse, setLastResponse] = useState<QAResponse | null>(null);
   const [showImport, setShowImport] = useState(false);
+
+  // Load documents on mount -- demonstrates basic persistence
+  useEffect(() => {
+    refreshDocuments();
+  }, []);
 
   const refreshDocuments = useCallback(async () => {
     try {
@@ -143,7 +126,7 @@ export function App() {
                 fontSize: '12px',
               }}
             >
-              + Import
+              {showImport ? 'Cancel' : '+ Import'}
             </button>
           </div>
           <DocumentList
@@ -180,7 +163,7 @@ export function App() {
                 {lastResponse.citations.length > 0 && (
                   <div style={{ marginTop: '10px', fontSize: '12px', color: '#8888bb' }}>
                     <strong>Citations:</strong>
-                    {lastResponse.citations.map((c, i) => (
+                    {lastResponse.citations.map((c: Citation, i: number) => (
                       <div key={i} style={{ marginTop: '4px', paddingLeft: '8px', borderLeft: '2px solid #533483' }}>
                         {c.documentTitle} (chunk {c.chunkIndex}): {c.excerpt.substring(0, 100)}...
                       </div>

@@ -1,4 +1,6 @@
-import React from 'react';
+interface ElectronFile extends File {
+  path: string;
+}
 
 interface Props {
   onImport: (filePath: string) => void;
@@ -24,7 +26,7 @@ export function ImportPanel({ onImport }: Props) {
         type="file"
         accept=".txt,.md"
         onChange={e => {
-          const file = e.target.files?.[0];
+          const file = e.target.files?.[0] as ElectronFile | undefined;
           if (file) onImport(file.path);
         }}
         style={{ marginTop: '10px' }}
