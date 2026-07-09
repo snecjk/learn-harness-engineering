@@ -5,6 +5,7 @@
 - [x] `npm install` completes without errors
 - [x] `npm run check` passes with zero TypeScript errors
 - [x] `npm run build` produces dist/ output
+- [x] `npm run test` passes with 11 unit tests across 3 service test files
 
 ## Feature Verification
 

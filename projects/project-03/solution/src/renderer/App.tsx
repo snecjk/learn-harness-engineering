@@ -1,44 +1,23 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { DocumentList } from './components/DocumentList';
 import { QuestionPanel } from './components/QuestionPanel';
 import { DocumentDetail } from './components/DocumentDetail';
 import { ImportPanel } from './components/ImportPanel';
 import { StatusBar } from './components/StatusBar';
-import { Document, AppStatus, QAResponse } from '../../shared/types';
+import type { AppStatus, Citation, Document, QAResponse } from '../shared/types';
 
-declare global {
-  interface Window {
-    knowledgeBase: {
-      documents: {
-        list: () => Promise<Document[]>;
-        import: (filePath: string) => Promise<Document>;
-        get: (id: string) => Promise<Document | null>;
-        getContent: (id: string) => Promise<string | null>;
-        delete: (id: string) => Promise<boolean>;
-      };
-      indexing: {
-        start: (documentId?: string) => Promise<AppStatus>;
-        status: () => Promise<AppStatus>;
-        chunks: (documentId: string) => Promise<Array<{ id: string; content: string; index: number; metadata: Record<string, string> }>>;
-      };
-      qa: {
-        ask: (question: string) => Promise<QAResponse>;
-        history: () => Promise<Array<{ question: string; response: QAResponse }>>;
-      };
-    };
-  }
-}
+const INITIAL_STATUS: AppStatus = {
+  documentsLoaded: 0,
+  indexStatus: 'idle',
+  lastActivity: '',
+  indexedCount: 0,
+  totalChunks: 0,
+};
 
 export function App() {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
-  const [appStatus, setAppStatus] = useState<AppStatus>({
-    documentsLoaded: 0,
-    indexStatus: 'idle',
-    lastActivity: '',
-    indexedCount: 0,
-    totalChunks: 0,
-  });
+  const [appStatus, setAppStatus] = useState<AppStatus>(INITIAL_STATUS);
   const [lastResponse, setLastResponse] = useState<QAResponse | null>(null);
   const [showImport, setShowImport] = useState(false);
 
@@ -106,6 +85,8 @@ export function App() {
       console.error('Indexing failed:', err);
     }
   }, [refreshDocuments]);
+
+  const citations: Citation[] = lastResponse?.citations ?? [];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
@@ -212,10 +193,10 @@ export function App() {
                   </span>
                 </div>
                 <div style={{ fontSize: '14px', lineHeight: 1.6 }}>{lastResponse.answer}</div>
-                {lastResponse.citations.length > 0 && (
+                {citations.length > 0 && (
                   <div style={{ marginTop: '10px', fontSize: '12px', color: '#8888bb' }}>
                     <strong>Citations:</strong>
-                    {lastResponse.citations.map((c, i) => (
+                    {citations.map((c, i) => (
                       <div key={i} style={{ marginTop: '4px', paddingLeft: '8px', borderLeft: '2px solid #533483' }}>
                         {c.documentTitle} (chunk {c.chunkIndex}): {c.excerpt.substring(0, 100)}...
                       </div>

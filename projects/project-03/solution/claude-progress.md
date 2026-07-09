@@ -52,3 +52,4 @@
 - Filled out `session-handoff.md`.
 - Verified `clean-state-checklist.md` -- all items checked.
 - All 11 features at status "pass".
+- Session 2: 2026-07-09 (20:30 - 20:45) -- Fixed 16 renderer type-check errors, added app:status IPC + preload, added vitest config + 11 unit tests (3 files). Check/test/build all green.

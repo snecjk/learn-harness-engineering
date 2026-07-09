@@ -56,4 +56,9 @@ export function registerIpcHandlers(ipcMain: IpcMain, services: Services) {
   ipcMain.handle(IPC_CHANNELS.GET_HISTORY, async () => {
     return qaService.getHistory();
   });
+
+  // App status
+  ipcMain.handle(IPC_CHANNELS.GET_STATUS, async () => {
+    return indexingService.getAppStatus();
+  });
 }
