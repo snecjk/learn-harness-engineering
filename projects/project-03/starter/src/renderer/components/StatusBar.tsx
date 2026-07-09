@@ -1,17 +1,21 @@
-import React from 'react';
-import { AppStatus } from '../../../shared/types';
+import { AppStatus } from '../../shared/types';
 
 interface Props {
   status: AppStatus;
 }
 
+const STATUS_COLORS: Record<AppStatus['indexStatus'], string> = {
+  idle: '#888',
+  indexing: '#f0ad4e',
+  ready: '#5cb85c',
+  error: '#d9534f',
+};
+
 export function StatusBar({ status }: Props) {
-  const statusColor = {
-    idle: '#888',
-    indexing: '#f0ad4e',
-    ready: '#5cb85c',
-    error: '#d9534f',
-  }[status.indexStatus] ?? '#888';
+  const statusColor = STATUS_COLORS[status.indexStatus] ?? '#888';
+  const progress = status.documentsLoaded > 0
+    ? `${status.indexedCount}/${status.documentsLoaded} indexed`
+    : 'no documents';
 
   return (
     <div style={{
@@ -35,6 +39,8 @@ export function StatusBar({ status }: Props) {
         }} />
         Index: {status.indexStatus}
       </span>
+      <span>{progress}</span>
+      <span>Chunks: {status.totalChunks}</span>
       <span>Documents: {status.documentsLoaded}</span>
       {status.lastActivity && (
         <span>Last activity: {new Date(status.lastActivity).toLocaleTimeString()}</span>

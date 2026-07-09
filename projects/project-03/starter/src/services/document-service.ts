@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import { Document } from '../shared/types';
+import { Document, DocumentMetadata } from '../shared/types';
 import { PersistenceService } from './persistence-service';
 
 const DOCUMENTS_META = 'documents-meta.json';
@@ -28,6 +28,7 @@ export class DocumentService {
     const filename = path.basename(filePath);
     const content = fs.readFileSync(filePath, 'utf-8');
     const stats = fs.statSync(filePath);
+    const metadata = this.extractMetadata(content, filename);
 
     const doc: Document = {
       id: uuidv4(),
@@ -36,6 +37,7 @@ export class DocumentService {
       importedAt: new Date().toISOString(),
       size: stats.size,
       status: 'imported',
+      metadata,
     };
 
     // Copy file to data directory
@@ -50,6 +52,17 @@ export class DocumentService {
     this.persistence.writeJson(DOCUMENTS_META, docs);
 
     return doc;
+  }
+  /** Extract structural metadata from document content. */
+  private extractMetadata(content: string, filename: string): DocumentMetadata {
+    const ext = path.extname(filename).slice(1).toLowerCase();
+    return {
+      wordCount: content.split(/\s+/).filter(w => w.length > 0).length,
+      lineCount: content.split(/\r?\n/).length,
+      fileType: ext || 'txt',
+      paragraphCount: content.split(/\n\s*\n/).filter(p => p.trim().length > 0).length,
+      charCount: content.length,
+    };
   }
 
   /** Get a single document by ID. */
