@@ -61,34 +61,34 @@
     {
       "id": "document-chunking",
       "name": "Document Chunking",
-      "description": "IndexingService splits documents into ~500 char chunks at paragraph boundaries with metadata",
-      "status": "pass",
-      "evidence": "IndexingService.chunkDocument() splits on paragraph boundaries, merges paragraphs until ~500 chars, creates Chunk objects with charCount/wordCount metadata. startIndexing() writes chunks/<docId>.json, persists index-meta, and marks the Document status='indexed' with chunk count. Verified: 4 unit tests pass (boundary splitting, chunk count, index-meta persistence, single-chunk case).",
-      "testedAt": "2026-07-09T12:16:00Z"
+      "description": "IndexingService splits documents into ~500 char chunks at paragraph boundaries",
+      "status": "not-started",
+      "evidence": null,
+      "testedAt": null
     },
     {
       "id": "metadata-extraction",
       "name": "Metadata Extraction",
-      "description": "On import, extract word count, line count, file type, paragraph count, and char count metadata from documents",
-      "status": "pass",
-      "evidence": "DocumentService.importDocument() calls extractMetadata() computing wordCount, lineCount, fileType, paragraphCount, charCount from content/filename. Document.metadata populated and persisted; DocumentDetail renders a metadata section. Verified: 3 unit tests pass (counts/filetype, missing-extension default, persistence across reload).",
-      "testedAt": "2026-07-09T12:16:00Z"
+      "description": "On import, extract word count, line count, and file type metadata from documents",
+      "status": "not-started",
+      "evidence": null,
+      "testedAt": null
     },
     {
       "id": "indexing-status-ui",
       "name": "Indexing Status in StatusBar",
-      "description": "StatusBar shows indexing progress with indexed count, total chunks, and color-coded status indicator",
-      "status": "pass",
-      "evidence": "AppStatus extended with indexedCount/totalChunks. app:status IPC registered and exposed via preload. App.tsx polls indexing.status() on import/index/Q&A/refresh. StatusBar renders color-coded dot + indexedCount/documentsLoaded progress + totalChunks. Verified: type-check + build pass.",
-      "testedAt": "2026-07-09T12:16:00Z"
+      "description": "StatusBar shows indexing progress with document counts and status indicator",
+      "status": "not-started",
+      "evidence": null,
+      "testedAt": null
     },
     {
       "id": "grounded-qa",
       "name": "Grounded Q&A with Citations",
-      "description": "QaService returns answers with document citations, excerpts, and confidence scores",
-      "status": "pass",
-      "evidence": "QaService wired with shared IndexingService (DI in main.ts). ask() retrieves chunks via getAllChunks(), scores by keyword overlap, returns top 2 as citations with documentId/documentTitle/chunkIndex/excerpt. Confidence 0.85 with citations, 0.30 without. App.tsx renders answer + citations + confidence. Verified: 3 unit tests pass (citations present, low-confidence fallback, history persistence).",
-      "testedAt": "2026-07-09T12:16:00Z"
+      "description": "QaService returns answers with document citations and confidence scores",
+      "status": "not-started",
+      "evidence": null,
+      "testedAt": null
     }
   ]
 }

@@ -8,15 +8,6 @@ export interface Document {
   size: number;
   status: 'imported' | 'indexing' | 'indexed' | 'error';
   chunks?: number;
-  metadata?: DocumentMetadata;
-}
-
-export interface DocumentMetadata {
-  wordCount: number;
-  lineCount: number;
-  fileType: string;
-  paragraphCount: number;
-  charCount: number;
 }
 
 export interface Chunk {
@@ -50,8 +41,6 @@ export interface AppStatus {
   documentsLoaded: number;
   indexStatus: 'idle' | 'indexing' | 'ready' | 'error';
   lastActivity: string;
-  indexedCount: number;
-  totalChunks: number;
 }
 
 /** IPC channel names -- single source of truth. */

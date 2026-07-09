@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
-import type { Chunk, Document } from '../../shared/types';
+import React, { useEffect, useState } from 'react';
+import { Document, Chunk } from '../../../shared/types';
 
 interface Props {
   document: Document;
   onDelete?: (id: string) => void;
-  onIndex?: (documentId?: string) => void;
 }
 
-export function DocumentDetail({ document, onDelete, onIndex }: Props) {
+export function DocumentDetail({ document, onDelete }: Props) {
   const [chunks, setChunks] = useState<Chunk[]>([]);
   const [showChunks, setShowChunks] = useState(false);
   const [content, setContent] = useState<string | null>(null);
@@ -15,8 +14,6 @@ export function DocumentDetail({ document, onDelete, onIndex }: Props) {
   const [loadingContent, setLoadingContent] = useState(false);
 
   useEffect(() => {
-    setChunks([]);
-    setShowChunks(false);
     window.knowledgeBase.indexing.chunks(document.id).then(setChunks);
   }, [document.id]);
 
@@ -38,13 +35,6 @@ export function DocumentDetail({ document, onDelete, onIndex }: Props) {
     }
   };
 
-  const handleIndex = async () => {
-    if (!onIndex) return;
-    await onIndex(document.id);
-    const refreshed = await window.knowledgeBase.indexing.chunks(document.id);
-    setChunks(refreshed);
-  };
-
   return (
     <div>
       <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '8px' }}>
@@ -56,15 +46,6 @@ export function DocumentDetail({ document, onDelete, onIndex }: Props) {
         <div>Size: {(document.size / 1024).toFixed(1)} KB</div>
         <div>Status: {document.status}</div>
         {document.chunks !== undefined && <div>Chunks: {document.chunks}</div>}
-        {document.metadata && (
-          <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px dashed #1a1a4e' }}>
-            <div>File type: {document.metadata.fileType}</div>
-            <div>Words: {document.metadata.wordCount}</div>
-            <div>Lines: {document.metadata.lineCount}</div>
-            <div>Paragraphs: {document.metadata.paragraphCount}</div>
-            <div>Characters: {document.metadata.charCount}</div>
-          </div>
-        )}
       </div>
 
       <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
@@ -97,9 +78,9 @@ export function DocumentDetail({ document, onDelete, onIndex }: Props) {
         >
           {showChunks ? 'Hide' : 'Show'} Chunks ({chunks.length})
         </button>
-        {document.status !== 'indexed' && onIndex && (
+        {document.status !== 'indexed' && (
           <button
-            onClick={handleIndex}
+            onClick={() => window.knowledgeBase.indexing.start(document.id)}
             style={{
               padding: '6px 12px',
               background: '#533483',
@@ -165,7 +146,7 @@ export function DocumentDetail({ document, onDelete, onIndex }: Props) {
               }}
             >
               <div style={{ fontSize: '11px', color: '#888', marginBottom: '4px' }}>
-                Chunk {chunk.index} ({chunk.metadata.charCount} chars, {chunk.metadata.wordCount} words)
+                Chunk {chunk.index} ({chunk.metadata.charCount} chars)
               </div>
               {chunk.content}
             </div>

@@ -1,11 +1,7 @@
+import React from 'react';
+
 interface Props {
   onImport: (filePath: string) => void;
-}
-
-// Electron attaches the source filesystem path to File objects, but the DOM
-// lib types do not declare it, so we read it through a narrow cast.
-interface ElectronFile extends File {
-  path: string;
 }
 
 export function ImportPanel({ onImport }: Props) {
@@ -28,8 +24,8 @@ export function ImportPanel({ onImport }: Props) {
         type="file"
         accept=".txt,.md"
         onChange={e => {
-          const file = e.target.files?.[0] as ElectronFile | undefined;
-          if (file?.path) onImport(file.path);
+          const file = e.target.files?.[0];
+          if (file) onImport(file.path);
         }}
         style={{ marginTop: '10px' }}
       />

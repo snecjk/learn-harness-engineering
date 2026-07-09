@@ -1,32 +1,50 @@
-import { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { DocumentList } from './components/DocumentList';
 import { QuestionPanel } from './components/QuestionPanel';
 import { DocumentDetail } from './components/DocumentDetail';
 import { ImportPanel } from './components/ImportPanel';
 import { StatusBar } from './components/StatusBar';
-import type { AppStatus, Citation, Document, QAResponse } from '../shared/types';
+import { Document, AppStatus, QAResponse } from '../../shared/types';
 
-const INITIAL_STATUS: AppStatus = {
-  documentsLoaded: 0,
-  indexStatus: 'idle',
-  lastActivity: '',
-  indexedCount: 0,
-  totalChunks: 0,
-};
+declare global {
+  interface Window {
+    knowledgeBase: {
+      documents: {
+        list: () => Promise<Document[]>;
+        import: (filePath: string) => Promise<Document>;
+        get: (id: string) => Promise<Document | null>;
+        delete: (id: string) => Promise<boolean>;
+      };
+      indexing: {
+        start: (documentId?: string) => Promise<{ status: string }>;
+        status: () => Promise<AppStatus>;
+        chunks: (documentId: string) => Promise<Array<{ id: string; content: string; index: number }>>;
+      };
+      qa: {
+        ask: (question: string) => Promise<QAResponse>;
+        history: () => Promise<Array<{ question: string; response: QAResponse }>>;
+      };
+    };
+  }
+}
 
 export function App() {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
-  const [appStatus, setAppStatus] = useState<AppStatus>(INITIAL_STATUS);
+  const [appStatus, setAppStatus] = useState<AppStatus>({
+    documentsLoaded: 0,
+    indexStatus: 'idle',
+    lastActivity: '',
+  });
   const [lastResponse, setLastResponse] = useState<QAResponse | null>(null);
   const [showImport, setShowImport] = useState(false);
 
-  // Load documents and indexing status on mount
+  // Load documents on mount -- demonstrates basic persistence
   useEffect(() => {
-    refreshStatus();
+    refreshDocuments();
   }, []);
 
-  const refreshStatus = useCallback(async () => {
+  const refreshDocuments = useCallback(async () => {
     try {
       const docs = await window.knowledgeBase.documents.list();
       setDocuments(docs);
@@ -40,36 +58,21 @@ export function App() {
   const handleImport = useCallback(async (filePath: string) => {
     try {
       await window.knowledgeBase.documents.import(filePath);
-      await refreshStatus();
+      await refreshDocuments();
       setShowImport(false);
     } catch (err) {
       console.error('Import failed:', err);
     }
-  }, [refreshStatus]);
+  }, [refreshDocuments]);
 
   const handleSelectDocument = useCallback((doc: Document) => {
     setSelectedDoc(doc);
   }, []);
 
-  const handleIndexDocument = useCallback(async (documentId?: string) => {
-    try {
-      await window.knowledgeBase.indexing.start(documentId);
-      await refreshStatus();
-      if (selectedDoc && (!documentId || selectedDoc.id === documentId)) {
-        const fresh = await window.knowledgeBase.documents.get(selectedDoc.id);
-        if (fresh) setSelectedDoc(fresh);
-      }
-    } catch (err) {
-      console.error('Indexing failed:', err);
-    }
-  }, [refreshStatus, selectedDoc]);
-
   const handleAskQuestion = useCallback(async (question: string) => {
     try {
       const response = await window.knowledgeBase.qa.ask(question);
       setLastResponse(response);
-      const status = await window.knowledgeBase.indexing.status();
-      setAppStatus(status);
     } catch (err) {
       console.error('Q&A failed:', err);
     }
@@ -81,13 +84,11 @@ export function App() {
       if (selectedDoc?.id === id) {
         setSelectedDoc(null);
       }
-      await refreshStatus();
+      await refreshDocuments();
     } catch (err) {
       console.error('Delete failed:', err);
     }
-  }, [selectedDoc, refreshStatus]);
-
-  const citations: Citation[] = lastResponse?.citations ?? [];
+  }, [selectedDoc, refreshDocuments]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
@@ -101,7 +102,7 @@ export function App() {
       }}>
         <h1 style={{ fontSize: '18px', fontWeight: 600 }}>Knowledge Base</h1>
         <button
-          onClick={refreshStatus}
+          onClick={refreshDocuments}
           style={{
             padding: '6px 14px',
             background: '#0f3460',
@@ -166,7 +167,6 @@ export function App() {
               <DocumentDetail
                 document={selectedDoc}
                 onDelete={handleDeleteDocument}
-                onIndex={handleIndexDocument}
               />
             ) : (
               <div style={{ color: '#666', textAlign: 'center', paddingTop: '40px' }}>
@@ -182,19 +182,16 @@ export function App() {
                 border: '1px solid #0f3460',
               }}>
                 <div style={{ fontSize: '14px', lineHeight: 1.6 }}>{lastResponse.answer}</div>
-                {citations.length > 0 && (
+                {lastResponse.citations.length > 0 && (
                   <div style={{ marginTop: '10px', fontSize: '12px', color: '#8888bb' }}>
                     <strong>Citations:</strong>
-                    {citations.map((c, i) => (
+                    {lastResponse.citations.map((c, i) => (
                       <div key={i} style={{ marginTop: '4px', paddingLeft: '8px', borderLeft: '2px solid #533483' }}>
                         {c.documentTitle} (chunk {c.chunkIndex}): {c.excerpt.substring(0, 100)}...
                       </div>
                     ))}
                   </div>
                 )}
-                <div style={{ marginTop: '8px', fontSize: '11px', color: '#666' }}>
-                  Confidence: {(lastResponse.confidence * 100).toFixed(0)}%
-                </div>
               </div>
             )}
           </div>
