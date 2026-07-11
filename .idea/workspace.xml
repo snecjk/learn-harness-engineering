@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ec98154d-aeb3-46d2-8fd2-7b0878c36b6f" name="更改" comment="  完成的 4 个 Feature                                                                                                                                                  &#10;                                                                                                                                                                       &#10;  1. metadata-extraction — 导入时提取 wordCount/lineCount/fileType，DocumentDetail 显示元数据                                                                          &#10;  2. document-chunking — 增强 IndexingService，索引后更新文档 status 和 chunks 计数                                                                                    &#10;  3. indexing-status-ui — StatusBar 显示索引进度、彩色状态指示器、文档数                                                                                               &#10;  4. grounded-qa — 修复 QaService 注入，UI 显示置信度和引用" />
+    <list default="true" id="ec98154d-aeb3-46d2-8fd2-7b0878c36b6f" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,7 +22,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="p02-baseline" />
+        <entry key="$PROJECT_DIR$" value="p03-baseline" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,7 +53,7 @@
     &quot;Python.demo.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;p02-improved&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;p03-improved&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -122,6 +124,9 @@
       <workItem from="1783254031786" duration="211000" />
       <workItem from="1783265743076" duration="7603000" />
       <workItem from="1783338885525" duration="4237000" />
+      <workItem from="1783601444771" duration="2031000" />
+      <workItem from="1783700069639" duration="1404000" />
+      <workItem from="1783780925828" duration="627000" />
     </task>
     <task id="LOCAL-00001" summary="p01-starter">
       <option name="closed" value="true" />
@@ -168,6 +173,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="p01-starter" />
