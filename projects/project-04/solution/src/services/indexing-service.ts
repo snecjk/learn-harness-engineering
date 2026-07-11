@@ -37,6 +37,14 @@ export class IndexingService {
       this.log.info('Indexing single document', { documentId, contentLength: content.length });
       const chunks = this.chunkDocument(documentId, content);
       this.persistence.writeJson(`${CHUNKS_DIR}/${documentId}.json`, chunks);
+
+      // Update the index manifest so getAllChunks() (used by QaService) can
+      // discover this document's chunks. Without this, single-document indexing
+      // leaves index-meta.json stale and Q&A returns empty results.
+      const chunksMeta = this.persistence.readJson<Record<string, string[]>>(INDEX_META) ?? {};
+      chunksMeta[documentId] = chunks.map(c => c.id);
+      this.persistence.writeJson(INDEX_META, chunksMeta);
+
       this.log.info('Single document indexed', { documentId, chunkCount: chunks.length });
       return this.getStatus();
     }
